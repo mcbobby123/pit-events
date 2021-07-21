@@ -3,6 +3,7 @@ const nbt = require('prismarine-nbt');
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 const majors = ['Blockhead', 'Pizza', 'Beast', 'Robbery', 'Spire', 'Squads', 'Team Deathmatch', 'Raffle', 'Rage Pit'];
+const OFFSET_CONSTANT = 59 * 1000; // sort of arbitrary, but works
 
 /** @returns {Promise<{timestamp: number, event: string, type: 'major'|'minor'}[]>} */
 const getEvents = () => new Promise(resolve => {
@@ -70,7 +71,7 @@ const getEvents = () => new Promise(resolve => {
                   const event = m[3];
                   return {
                     event,
-                    timestamp: now + offset,
+                    timestamp: (Math.floor((now + offset) / 60000) * 60000) + OFFSET_CONSTANT,
                     type: majors.includes(event) ? 'major' : 'minor',
                   };
                 });
